@@ -21,6 +21,7 @@ http://localhost:3000
 
 に２つのブラウザタブでページにアクセスし、それぞれでいいねボタンを押したのが、両方のブラウザに反映される。
 
+![動作テスト](https://github.com/hugodeblog/node-socketio/blob/images/iine_test.gif)
 
 
 
