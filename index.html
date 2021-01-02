@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>カウンターページ</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <h1>いいね数のカウント</h1>
+    <p>このページのいいね数
+    <div id="loveNum">0</div>
+    </p>
+    <input id="submitLove" type="button" value="いいね"/>
+    <script>
+    $(document).ready(function(){
+      var socket = io('/home');
+      socket.on('connect', socket => {
+        console.log('socket connection: client');
+      });
+
+      // サーバーから既存のいいね数が来た
+      socket.on('fistlove', function(data, fn) {
+        console.log('fistlove', data);
+        $('#loveNum').empty();
+        $('#loveNum').text(data.num);
+        fn('最初のデータはクライアント側で受け取ったよ');
+      });
+
+      // サーバーからいいね数更新が来た
+      socket.on('updatelove', function(data) {
+        console.log('updatelove', data);
+        $('#loveNum').empty();
+        $('#loveNum').text(data.num);
+      });
+
+      // サーバーへいいね数インクリを通知
+      $('#submitLove').on('click', function(event) {
+        socket.emit('submitlove', {
+          message: 'いいね'
+        });
+      });
+    });
+    </script>
+  </body>
+</html>
